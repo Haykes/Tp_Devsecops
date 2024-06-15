@@ -38,6 +38,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Debug SSH Key
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\n' > /tmp/private_key
+        cat /tmp/private_key
+        ssh-agent bash -c 'ssh-add /tmp/private_key && ssh-add -l'
+
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
