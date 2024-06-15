@@ -43,10 +43,6 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Create deploy directory
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo -S mkdir -p ${{ secrets.DEPLOY_DIR }}"
-
     - name: Copy Docker Compose file
       run: |
         scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_DIR }}/docker-compose.yml
@@ -55,7 +51,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
         cd ${{ secrets.DEPLOY_DIR }};
-        sudo -S docker-compose down;
-        sudo -S docker-compose pull;
-        sudo -S docker-compose up -d;
+        sudo docker-compose down;
+        sudo docker-compose pull;
+        sudo docker-compose up -d;
         "
